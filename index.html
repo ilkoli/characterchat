@@ -1,1 +1,127 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>웅니 AI 챗 스튜디오</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div class="logo">웅니 AI Studio ✨</div>
+        <div class="header-right">
+          <span class="model-pill">Gemini 2.5 Pro (프론트만)</span>
+        </div>
+      </header>
 
+      <div class="app-main">
+        <!-- 왼쪽: 채팅/캐릭터 리스트 -->
+        <aside class="sidebar">
+          <div class="sidebar-top">
+            <button class="btn primary full" id="new-chat-btn">+ 새 채팅</button>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-title">캐릭터</div>
+            <div class="character-list">
+              <button class="character-card active">
+                <div class="char-avatar">AI</div>
+                <div class="char-meta">
+                  <div class="char-name">기본 봇</div>
+                  <div class="char-sub">일반 어시스턴트</div>
+                </div>
+              </button>
+              <button class="character-card">
+                <div class="char-avatar pink">🩷</div>
+                <div class="char-meta">
+                  <div class="char-name">애교봇</div>
+                  <div class="char-sub">재잘재잘, 장문 특화</div>
+                </div>
+              </button>
+              <button class="character-card">
+                <div class="char-avatar blue">📚</div>
+                <div class="char-meta">
+                  <div class="char-name">스터디봇</div>
+                  <div class="char-sub">공부/정리 위주</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- 가운데: 채팅 영역 -->
+        <main class="chat-section">
+          <div class="chat-header">
+            <div class="chat-title-area">
+              <div class="chat-title">기본 봇과의 대화</div>
+              <div class="chat-subtitle" id="session-subtitle">
+                새 세션 · 장기기억 요약 적용 안 됨
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <button class="icon-btn" id="clear-chat-btn" title="채팅 초기화">
+                🗑
+              </button>
+            </div>
+          </div>
+
+          <div id="chat-log" class="chat-log">
+            <!-- 메시지들이 JS로 채워짐 -->
+          </div>
+
+          <form id="chat-form" class="chat-input">
+            <textarea
+              id="chat-input"
+              rows="2"
+              placeholder="메시지를 입력하고 Enter 또는 ⌘+Enter로 전송해보세요!"
+            ></textarea>
+            <div class="chat-input-footer">
+              <div class="chat-hints">
+                <span>Enter: 줄바꿈 · Ctrl+Enter / ⌘+Enter: 전송</span>
+              </div>
+              <div class="chat-buttons">
+                <button
+                  type="button"
+                  class="btn subtle"
+                  id="reroll-btn"
+                  title="마지막 봇 답변 리롤"
+                >
+                  🔁 리롤
+                </button>
+                <button type="submit" class="btn primary">
+                  보내기
+                </button>
+              </div>
+            </div>
+          </form>
+        </main>
+
+        <!-- 오른쪽: 장기기억 / 세션 정보 패널 -->
+        <aside class="sidepanel">
+          <div class="panel-section">
+            <div class="panel-title">🧠 장기기억 (요약)</div>
+            <div id="memory-box" class="memory-box">
+              아직 저장된 장기기억이 없어요.  
+              나중에 요약 시스템 붙이면 여기에  
+              “웅니의 취향 / 말투 / 최근 맥락” 같은 게 요약되어 들어올 자리!
+            </div>
+            <button class="btn subtle full" id="fake-memory-btn">
+              (테스트용) 가짜 기억 넣어보기
+            </button>
+          </div>
+
+          <div class="panel-section">
+            <div class="panel-title">📊 세션 상태</div>
+            <ul class="session-info" id="session-info">
+              <li>대화 턴: <span id="turn-count">0</span></li>
+              <li>마지막 리롤 횟수: <span id="reroll-count">0</span></li>
+              <li>마지막 메시지 길이: <span id="last-length">0 자</span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
