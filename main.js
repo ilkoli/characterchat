@@ -46,7 +46,7 @@ function appendMessage(role, text) {
 
   const metaEl = document.createElement("div");
   metaEl.className = "message-meta";
-  metaEl.textContent = role === "user" ? "웅니" : "웅니 AI 봇";
+  metaEl.textContent = role === "user" ? "AI" : "AI 봇";
 
   const bubbleEl = document.createElement("div");
   bubbleEl.className = "message-bubble";
@@ -160,7 +160,7 @@ clearChatBtnEl.addEventListener("click", () => {
 // 테스트용 가짜 장기기억 넣기
 fakeMemoryBtnEl.addEventListener("click", () => {
   memoryBoxEl.textContent =
-    "• 웅니는 Gemini 2.5 Pro 기반 개인 챗봇을 만들고 싶어함.\n" +
+    "• 사용자는 Gemini 2.5 Pro 기반 개인 챗봇을 만들고 싶어함.\n" +
     "• 리롤, 장기기억, 요약 시스템 등 구조적인 설계에 관심이 많음.\n" +
     "• 비용을 꼼꼼히 계산하며 월 3만원 안쪽에서 운영하고 싶어함.\n" +
     "• 재잘재잘 장문 대화를 선호하고, UX/디자인에도 관심이 많음.";
@@ -172,7 +172,7 @@ updateSessionStats(0);
 // 첫 안내 메시지 하나 넣어주기
 appendMessage(
   "bot",
-  "웅니, 안녕! 👋\n\n여기는 아직 프론트엔드만 있는 시제품 챗 화면이에요.\n" +
+  "안녕! 👋\n\n여기는 아직 프론트엔드만 있는 시제품 챗 화면이에요.\n" +
     "- 가운데는 채팅 영역\n" +
     "- 오른쪽은 장기기억/세션 정보\n" +
     "- 왼쪽은 캐릭터/세션 리스트\n\n나중에 서버랑 API만 붙이면 진짜 Gemini 2.5 Pro랑 대화하는 플랫폼으로 바뀔 거예요 ✨"
