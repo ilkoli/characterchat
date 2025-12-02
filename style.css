@@ -484,24 +484,23 @@ a {
 /* 테마 토글 */
 
 .theme-toggle {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 20;
-  padding: 10px 14px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
-  border: 1px solid var(--accent-strong);
-  background: var(--accent-strong);
-  color: var(--text-contrast);
-  font-weight: 600;
-  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-pill);
+  color: var(--text);
   cursor: pointer;
-  transition: transform 0.12s ease, filter 0.12s ease;
+  box-shadow: var(--shadow-soft);
+  transition: background-color 0.12s ease, transform 0.12s ease;
 }
 
 .theme-toggle:hover {
+  background: var(--surface-subtle);
   transform: translateY(-1px);
-  filter: brightness(1.06);
 }
 
 /* 스크롤바 조금 꾸미기 */

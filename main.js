@@ -8,10 +8,14 @@ function applyTheme(theme) {
   document.body.classList.toggle("theme-dark", isDark);
 
   if (themeToggleEl) {
-    const label = isDark ? "🌙 다크 모드" : "🌞 라이트 모드";
+    const icon = isDark ? "🌙" : "🌞";
+    const current = isDark ? "다크" : "라이트";
     const next = isDark ? "라이트" : "다크";
-    themeToggleEl.textContent = label;
-    themeToggleEl.setAttribute("aria-label", `${label} (눌러서 ${next} 전환)`);
+    themeToggleEl.textContent = icon;
+    themeToggleEl.setAttribute(
+      "aria-label",
+      `${current} 모드 (눌러서 ${next} 전환)`,
+    );
   }
 }
 
