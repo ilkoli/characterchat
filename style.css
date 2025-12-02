@@ -445,7 +445,7 @@ body {
   border-radius: 999px;
 }
 
-/* 반응형 (화면 좁을 때 오른쪽 패널/사이드바 숨김 – 기존 로직 유지) */
+/* 반응형 (화면 좁을 때 오른쪽 패널/사이드바 숨김) */
 
 @media (max-width: 960px) {
   .app-main {
@@ -464,7 +464,9 @@ body {
     display: none;
   }
 }
+
 /* 여러 "화면" 공통 스타일 */
+
 .screen {
   display: none;
   height: calc(100vh - 56px);
@@ -476,6 +478,7 @@ body {
 }
 
 /* 메인 화면 레이아웃 */
+
 .home-wrap {
   padding: 20px 18px;
 }
@@ -506,6 +509,7 @@ body {
 }
 
 /* 서브 화면 상단 헤더 */
+
 .screen-header {
   display: flex;
   align-items: center;
@@ -521,6 +525,7 @@ body {
 }
 
 /* 제작/프로필 공통 컨테이너 */
+
 .generic-page {
   padding: 18px;
   font-size: 14px;
