@@ -2,6 +2,10 @@
   /* 베이스 & 카드 배경 */
   --bg: #F1F3E0;          /* 가장 연한 크림연두 */
   --bg-elevated: #FFFFFF; /* 카드/패널용 흰색 */
+  --surface: #F8FAF0;     /* 사이드/패널 배경 */
+  --surface-strong: #F4F7EA;
+  --surface-subtle: #EEF3DD;
+  --surface-pill: #E5EBD5;
 
   /* 테두리 & 구분선 */
   --border-subtle: #D2DCB6;
@@ -14,16 +18,51 @@
   /* 텍스트 */
   --text: #2F3A29;
   --text-muted: #7A8670;
+  --text-contrast: #FFFFFF;
 
-  /* 말풍선 */
+  /* 말풍선 & 아바타 */
   --user-bubble: #D2DCB6;
   --bot-bubble: #FFFFFF;
+  --avatar-bg: #D2DCB6;
+  --avatar-text: #3A4730;
 
-  /* 공통 값 */
+  /* 그 외 공통 값 */
   --radius-lg: 18px;
   --radius-md: 12px;
   --radius-sm: 8px;
   --shadow-soft: 0 12px 28px rgba(119, 136, 115, 0.22);
+  --scrollbar-thumb: #C1D1AE;
+  --header-gradient-start: var(--bg);
+  --header-gradient-end: #D2DCB6;
+}
+
+body.theme-dark {
+  --bg: #151d14;
+  --bg-elevated: #1d271c;
+  --surface: #1b241a;
+  --surface-strong: #232f23;
+  --surface-subtle: #2d3a2e;
+  --surface-pill: #344437;
+
+  --border-subtle: #3f4f3f;
+
+  --accent: #A1BC98;
+  --accent-soft: rgba(161, 188, 152, 0.12);
+  --accent-strong: #93A98C;
+
+  --text: #E6EBD7;
+  --text-muted: #B1BEA6;
+  --text-contrast: #0F140F;
+
+  --user-bubble: #2f3d2f;
+  --bot-bubble: #1f281f;
+  --avatar-bg: #2f3d2f;
+  --avatar-text: #dbe6cf;
+
+  --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.35);
+  --scrollbar-thumb: #4a5a48;
+  --header-gradient-start: #1b241a;
+  --header-gradient-end: #2d3a2e;
 }
 
 *,
@@ -61,7 +100,11 @@ a {
   justify-content: space-between;
   padding: 0 18px;
   border-bottom: 1px solid var(--border-subtle);
-  background: linear-gradient(90deg, #F1F3E0, #D2DCB6);
+  background: linear-gradient(
+    90deg,
+    var(--header-gradient-start),
+    var(--header-gradient-end)
+  );
 }
 
 .logo {
@@ -101,7 +144,7 @@ a {
 .sidebar {
   border-right: 1px solid var(--border-subtle);
   padding: 12px;
-  background: #F8FAF0;
+  background: var(--surface);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -151,7 +194,7 @@ a {
 }
 
 .character-card:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--accent-soft);
 }
 
 .character-card.active {
@@ -163,12 +206,12 @@ a {
   width: 30px;
   height: 30px;
   border-radius: 999px;
-  background: #D2DCB6;
+  background: var(--avatar-bg);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
-  color: #3A4730;
+  color: var(--avatar-text);
 }
 
 .char-avatar.pink {
@@ -199,7 +242,7 @@ a {
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border-subtle);
-  background: #F4F7EA;
+  background: var(--surface-strong);
 }
 
 .chat-header {
@@ -208,7 +251,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bg-elevated);
 }
 
 .chat-title-area {
@@ -258,18 +301,18 @@ a {
   width: 26px;
   height: 26px;
   border-radius: 999px;
-  background: #D2DCB6;
+  background: var(--avatar-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
   flex-shrink: 0;
-  color: #3A4730;
+  color: var(--avatar-text);
 }
 
 .message.user .message-avatar {
-  background: #A1BC98;
-  color: #FFFFFF;
+  background: var(--accent);
+  color: var(--text-contrast);
 }
 
 .message-body {
@@ -305,7 +348,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background: #F8FAF0;
+  background: var(--surface);
 }
 
 #chat-input {
@@ -314,7 +357,7 @@ a {
   border-radius: 10px;
   border: 1px solid var(--border-subtle);
   padding: 8px 10px;
-  background: #FFFFFF;
+  background: var(--bg-elevated);
   color: var(--text);
   font-family: inherit;
   font-size: 13px;
@@ -346,7 +389,7 @@ a {
 
 .sidepanel {
   padding: 12px;
-  background: #F8FAF0;
+  background: var(--surface);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -369,7 +412,7 @@ a {
 .memory-box {
   font-size: 12px;
   color: var(--text-muted);
-  background: #F4F7EA;
+  background: var(--surface-strong);
   border-radius: var(--radius-md);
   padding: 8px 9px;
   border: 1px dashed var(--border-subtle);
@@ -398,7 +441,7 @@ a {
   font-size: 12px;
   font-family: inherit;
   cursor: pointer;
-  background: #E5EBD5;
+  background: var(--surface-pill);
   color: var(--text);
   display: inline-flex;
   align-items: center;
@@ -409,7 +452,7 @@ a {
 
 .btn.primary {
   background: var(--accent-strong);
-  color: #FFFFFF;
+  color: var(--text-contrast);
   font-weight: 600;
   border-color: var(--accent-strong);
 }
@@ -419,7 +462,7 @@ a {
 }
 
 .btn.subtle {
-  background: #EEF3DD;
+  background: var(--surface-subtle);
   color: var(--text-muted);
   border-color: var(--border-subtle);
 }
@@ -433,9 +476,32 @@ a {
   border: 1px solid var(--border-subtle);
   padding: 5px 8px;
   font-size: 12px;
-  background: #EEF3DD;
+  background: var(--surface-subtle);
   color: var(--text-muted);
   cursor: pointer;
+}
+
+/* 테마 토글 */
+
+.theme-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 20;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-strong);
+  background: var(--accent-strong);
+  color: var(--text-contrast);
+  font-weight: 600;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
 }
 
 /* 스크롤바 조금 꾸미기 */
@@ -447,7 +513,7 @@ a {
 
 .chat-log::-webkit-scrollbar-thumb,
 .character-list::-webkit-scrollbar-thumb {
-  background: #C1D1AE;
+  background: var(--scrollbar-thumb);
   border-radius: 999px;
 }
 
@@ -522,7 +588,7 @@ a {
   gap: 10px;
   padding: 10px 18px;
   border-bottom: 1px solid var(--border-subtle);
-  background: #F8FAF0;
+  background: var(--surface);
 }
 
 .screen-title {
