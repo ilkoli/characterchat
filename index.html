@@ -2,14 +2,14 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>웅니 AI Studio</title>
+    <title>테스트</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="app">
       <header class="app-header">
-        <div class="logo">웅니 AI Studio 🌿</div>
+        <div class="logo">AI 채팅 프론트엔드 테스트</div>
         <div class="header-right">
           <span class="model-pill">Gemini 2.5 Pro (프론트만)</span>
         </div>
@@ -20,18 +20,17 @@
         <!-- 메인 화면 -->
         <section id="screen-home" class="screen active">
           <div class="home-wrap">
-            <h1>웅니 AI Studio 에 오신 것을 환영합니다 🌱</h1>
+            <h1>메인 화면</h1>
             <p class="home-sub">
-              아래에서 원하는 기능을 골라서 들어갈 수 있어요.<br />
-              지금은 프론트엔드만 연결되어 있고, 나중에 Gemini 2.5 Pro API를 붙이면
-              진짜 AI 플랫폼이 됩니다!
+              아래에서 원하는 기능 골라 들어감<br />
+              지금은 프론트엔드만 연결, 나중에 Gemini 2.5 Pro API 붙임
             </p>
 
             <div class="home-grid">
               <div class="home-card">
                 <h2>💬 AI 채팅</h2>
                 <p>
-                  나만 쓰는 개인 챗봇 공간. 리롤, 장기기억 등은 여기서 테스트해요.
+                  채팅방
                 </p>
                 <button class="btn primary nav-btn" data-target="chat">
                   채팅 시작하기
@@ -41,8 +40,7 @@
               <div class="home-card">
                 <h2>🎨 제작</h2>
                 <p>
-                  캐릭터 프롬프트 / 시스템 프롬프트 / 말투 설정 등을 설계하는
-                  공간으로 쓸 수 있어요.
+                  캐릭터 프롬프트 / 시스템 프롬프트 / 말투 설정 등
                 </p>
                 <button class="btn subtle nav-btn" data-target="create">
                   제작 화면 열기
@@ -52,8 +50,7 @@
               <div class="home-card">
                 <h2>👤 프로필</h2>
                 <p>
-                  웅니 기본 말투, 선호 모델, 월 사용 예산 같은 걸 모아두는
-                  설정 페이지로 쓸 수 있어요.
+                  기본 말투, 선호 모델, 월 사용 예산 등
                 </p>
                 <button class="btn subtle nav-btn" data-target="profile">
                   프로필 보기
@@ -69,7 +66,7 @@
             <button class="btn subtle nav-btn" data-target="home">
               ← 메인으로
             </button>
-            <span class="screen-title">AI 채팅</span>
+            <span class="screen-title">채팅</span>
           </div>
 
           <div class="app-main">
@@ -112,7 +109,7 @@
             <main class="chat-section">
               <div class="chat-header">
                 <div class="chat-title-area">
-                  <div class="chat-title">기본 봇과의 대화</div>
+                  <div class="chat-title">기본 봇</div>
                   <div class="chat-subtitle" id="session-subtitle">
                     새 세션 · 장기기억 요약 적용 안 됨
                   </div>
@@ -165,8 +162,7 @@
                 <div class="panel-title">🧠 장기기억 (요약)</div>
                 <div id="memory-box" class="memory-box">
                   아직 저장된 장기기억이 없어요.<br />
-                  나중에 요약 시스템 붙이면 여기에 웅니 취향/말투/최근 대화 요약이
-                  들어올 예정!
+                  나중에 요약 시스템 붙이기
                 </div>
                 <button class="btn subtle full" id="fake-memory-btn">
                   (테스트용) 가짜 기억 넣어보기
@@ -177,7 +173,6 @@
                 <div class="panel-title">📊 세션 상태</div>
                 <ul class="session-info" id="session-info">
                   <li>대화 턴: <span id="turn-count">0</span></li>
-                  <li>마지막 리롤 횟수: <span id="reroll-count">0</span></li>
                   <li>마지막 메시지 길이: <span id="last-length">0 자</span></li>
                 </ul>
               </div>
@@ -196,10 +191,9 @@
           <div class="generic-page">
             <h2>🎨 제작 탭</h2>
             <p>
-              여기에는 나중에 캐릭터 프롬프트, 말투, 세계관 설정을 입력하고
-              저장하는 UI를 넣을 수 있어요.
+              나중에 캐릭터 프롬프트, 말투, 세계관 설정을 입력하고 저장하는 UI 넣기
             </p>
-            <p>지금은 그냥 레이아웃만 잡아둔 상태입니다 :)</p>
+            <p>지금은 그냥 레이아웃만 잡아둔 상태</p>
           </div>
         </section>
 
@@ -214,10 +208,9 @@
           <div class="generic-page">
             <h2>👤 프로필</h2>
             <p>
-              웅니 기본 말투, 선호 모델, 월 예산, 기록 보존 방식 등등을 설정하는
-              페이지로 쓸 수 있습니다.
+              기본 말투, 선호 모델, 월 예산, 기록 보존 방식 등 설정
             </p>
-            <p>나중에 DB랑 연결하면 진짜 설정값 저장도 가능해요.</p>
+            <p>나중에 DB랑 연결하면 진짜 설정값 저장도 가능</p>
           </div>
         </section>
       </main>
