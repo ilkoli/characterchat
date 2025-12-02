@@ -2,221 +2,48 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>테스트</title>
+    <title>일콜이AI - 메인</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="app">
       <header class="app-header">
-        <div class="logo">AI 채팅 프론트엔드 테스트</div>
+        <div class="logo">일콜이AI</div>
         <div class="header-right">
           <span class="model-pill">Gemini 2.5 Pro (프론트만)</span>
         </div>
       </header>
 
-      <!-- 여기서부터 각 "화면"들 -->
       <main class="app-root">
-        <!-- 메인 화면 -->
-        <section id="screen-home" class="screen active">
-          <div class="home-wrap">
-            <h1>메인 화면</h1>
-            <p class="home-sub">
-              아래에서 원하는 기능 골라 들어감<br />
-              지금은 프론트엔드만 연결, 나중에 Gemini 2.5 Pro API 붙임
-            </p>
+        <section class="home-wrap">
+          <h1>메인 화면</h1>
+          <p class="home-sub">
+            아래에서 원하는 기능 골라 들어감<br />
+            지금은 프론트엔드만 연결, 나중에 Gemini 2.5 Pro API 붙임
+          </p>
 
-            <div class="home-grid">
-              <div class="home-card">
-                <h2>💬 AI 채팅</h2>
-                <p>
-                  채팅방
-                </p>
-                <button class="btn primary nav-btn" data-target="chat">
-                  채팅 시작하기
-                </button>
-              </div>
-
-              <div class="home-card">
-                <h2>🎨 제작</h2>
-                <p>
-                  캐릭터 프롬프트 / 시스템 프롬프트 / 말투 설정 등
-                </p>
-                <button class="btn subtle nav-btn" data-target="create">
-                  제작 화면 열기
-                </button>
-              </div>
-
-              <div class="home-card">
-                <h2>👤 프로필</h2>
-                <p>
-                  기본 말투, 선호 모델, 월 사용 예산 등
-                </p>
-                <button class="btn subtle nav-btn" data-target="profile">
-                  프로필 보기
-                </button>
-              </div>
+          <div class="home-grid">
+            <div class="home-card">
+              <h2>💬 AI 채팅</h2>
+              <p>채팅방</p>
+              <a class="btn primary" href="chat.html">채팅 시작하기</a>
             </div>
-          </div>
-        </section>
 
-        <!-- 채팅 화면 -->
-        <section id="screen-chat" class="screen">
-          <div class="screen-header">
-            <button class="btn subtle nav-btn" data-target="home">
-              ← 메인으로
-            </button>
-            <span class="screen-title">채팅</span>
-          </div>
+            <div class="home-card">
+              <h2>🎨 제작</h2>
+              <p>캐릭터 프롬프트 / 시스템 프롬프트 / 말투 설정 등</p>
+              <a class="btn subtle" href="create.html">제작 화면 열기</a>
+            </div>
 
-          <div class="app-main">
-            <!-- 왼쪽: 채팅/캐릭터 리스트 -->
-            <aside class="sidebar">
-              <div class="sidebar-top">
-                <button class="btn primary full" id="new-chat-btn">
-                  + 새 채팅
-                </button>
-              </div>
-              <div class="sidebar-section">
-                <div class="sidebar-title">캐릭터</div>
-                <div class="character-list">
-                  <button class="character-card active">
-                    <div class="char-avatar">AI</div>
-                    <div class="char-meta">
-                      <div class="char-name">기본 봇</div>
-                      <div class="char-sub">일반 어시스턴트</div>
-                    </div>
-                  </button>
-                  <button class="character-card">
-                    <div class="char-avatar pink">🩷</div>
-                    <div class="char-meta">
-                      <div class="char-name">봇1</div>
-                      <div class="char-sub">장문 특화</div>
-                    </div>
-                  </button>
-                  <button class="character-card">
-                    <div class="char-avatar blue">📚</div>
-                    <div class="char-meta">
-                      <div class="char-name">봇2</div>
-                      <div class="char-sub">생산성</div>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </aside>
-
-            <!-- 가운데: 채팅 영역 -->
-            <main class="chat-section">
-              <div class="chat-header">
-                <div class="chat-title-area">
-                  <div class="chat-title">기본 봇</div>
-                  <div class="chat-subtitle" id="session-subtitle">
-                    새 세션 · 장기기억 요약 적용 안 됨
-                  </div>
-                </div>
-                <div class="chat-header-actions">
-                  <button
-                    class="icon-btn"
-                    id="clear-chat-btn"
-                    title="채팅 초기화"
-                  >
-                    🗑
-                  </button>
-                </div>
-              </div>
-
-              <div id="chat-log" class="chat-log">
-                <!-- 메시지들이 JS로 들어옴 -->
-              </div>
-
-              <form id="chat-form" class="chat-input">
-                <textarea
-                  id="chat-input"
-                  rows="2"
-                  placeholder="메시지를 입력하고 Ctrl+Enter / ⌘+Enter로 전송해보세요!"
-                ></textarea>
-                <div class="chat-input-footer">
-                  <div class="chat-hints">
-                    <span>Enter: 줄바꿈 · Ctrl/Cmd+Enter: 전송</span>
-                  </div>
-                  <div class="chat-buttons">
-                    <button
-                      type="button"
-                      class="btn subtle"
-                      id="reroll-btn"
-                      title="마지막 봇 답변 리롤"
-                    >
-                      🔁 리롤
-                    </button>
-                    <button type="submit" class="btn primary">
-                      보내기
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </main>
-
-            <!-- 오른쪽: 장기기억 / 세션 정보 패널 -->
-            <aside class="sidepanel">
-              <div class="panel-section">
-                <div class="panel-title">🧠 장기기억 (요약)</div>
-                <div id="memory-box" class="memory-box">
-                  아직 저장된 장기기억이 없어요.<br />
-                  나중에 요약 시스템 붙이기
-                </div>
-                <button class="btn subtle full" id="fake-memory-btn">
-                  (테스트용) 가짜 기억 넣어보기
-                </button>
-              </div>
-
-              <div class="panel-section">
-                <div class="panel-title">📊 세션 상태</div>
-                <ul class="session-info" id="session-info">
-                  <li>대화 턴: <span id="turn-count">0</span></li>
-                  <li>리롤 횟수: <span id="reroll-count">0</span></li>
-                  <li>마지막 메시지 길이: <span id="last-length">0 자</span></li>
-                </ul>
-              </div>
-            </aside>
-          </div>
-        </section>
-
-        <!-- 제작 화면 -->
-        <section id="screen-create" class="screen">
-          <div class="screen-header">
-            <button class="btn subtle nav-btn" data-target="home">
-              ← 메인으로
-            </button>
-            <span class="screen-title">제작</span>
-          </div>
-          <div class="generic-page">
-            <h2>🎨 제작 탭</h2>
-            <p>
-              나중에 캐릭터 프롬프트, 말투, 세계관 설정을 입력하고 저장하는 UI 넣기
-            </p>
-            <p>지금은 그냥 레이아웃만 잡아둔 상태</p>
-          </div>
-        </section>
-
-        <!-- 프로필 화면 -->
-        <section id="screen-profile" class="screen">
-          <div class="screen-header">
-            <button class="btn subtle nav-btn" data-target="home">
-              ← 메인으로
-            </button>
-            <span class="screen-title">프로필</span>
-          </div>
-          <div class="generic-page">
-            <h2>👤 프로필</h2>
-            <p>
-              기본 말투, 선호 모델, 월 예산, 기록 보존 방식 등 설정
-            </p>
-            <p>나중에 DB랑 연결하면 진짜 설정값 저장도 가능</p>
+            <div class="home-card">
+              <h2>👤 프로필</h2>
+              <p>기본 말투, 선호 모델, 월 사용 예산 등</p>
+              <a class="btn subtle" href="profile.html">프로필 보기</a>
+            </div>
           </div>
         </section>
       </main>
     </div>
-
-    <script src="main.js"></script>
   </body>
 </html>
