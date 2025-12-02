@@ -50,7 +50,7 @@ function appendMessage(role, text) {
 
   const metaEl = document.createElement("div");
   metaEl.className = "message-meta";
-  metaEl.textContent = role === "user" ? "웅니" : "웅니 AI 봇";
+  metaEl.textContent = role === "user" ? "사용자" : "AI 봇";
 
   const bubbleEl = document.createElement("div");
   bubbleEl.className = "message-bubble";
