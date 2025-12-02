@@ -242,7 +242,6 @@ if (chatLogEl) {
   updateSessionStats(0);
   appendMessage(
     "bot",
-    "안녕! 👋\n지금 이 채팅은 백엔드 Cloud Functions를 통해 Gemini 2.5 Pro로 연결돼 있어요.\n" +
-      "아래 입력창에 아무 말이나 적고 '보내기'를 눌러서 테스트해 봐!"
+    "지금 이 채팅은 백엔드 Cloud Functions를 통해 Gemini 2.5 Pro로 연결돼 있어요."
   );
 }
