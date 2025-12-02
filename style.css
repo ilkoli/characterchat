@@ -42,6 +42,10 @@ body {
   height: 100vh;
 }
 
+a {
+  text-decoration: none;
+}
+
 .app {
   height: 100vh;
   display: flex;
@@ -400,6 +404,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  text-decoration: none;
 }
 
 .btn.primary {
