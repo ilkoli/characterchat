@@ -1,4 +1,36 @@
-// main.js
+// ===== 화면 전환(메인/채팅/제작/프로필) =====
+
+const screens = {
+  home: document.getElementById("screen-home"),
+  chat: document.getElementById("screen-chat"),
+  create: document.getElementById("screen-create"),
+  profile: document.getElementById("screen-profile"),
+};
+
+function showScreen(name) {
+  Object.entries(screens).forEach(([key, el]) => {
+    if (!el) return;
+    el.classList.toggle("active", key === name);
+  });
+  // 채팅 화면 들어올 때 로그 맨 아래로 스크롤
+  if (name === "chat") {
+    scrollToBottom();
+  }
+}
+
+// 메인/상단 버튼들에 연결
+document.querySelectorAll(".nav-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const target = btn.getAttribute("data-target");
+    if (!target) return;
+    showScreen(target);
+  });
+});
+
+// 시작 화면은 메인
+showScreen("home");
+
+// ===== 채팅 로직 =====
 
 const chatLogEl = document.getElementById("chat-log");
 const chatFormEl = document.getElementById("chat-form");
@@ -21,12 +53,14 @@ let turnCount = 0;
 // --- 유틸 ---
 
 function scrollToBottom() {
+  if (!chatLogEl) return;
   requestAnimationFrame(() => {
     chatLogEl.scrollTop = chatLogEl.scrollHeight;
   });
 }
 
 function updateSessionStats(latestTextLength = 0) {
+  if (!turnCountEl || !rerollCountEl || !lastLengthEl) return;
   turnCountEl.textContent = String(turnCount);
   rerollCountEl.textContent = String(rerollCount);
   lastLengthEl.textContent = `${latestTextLength} 자`;
@@ -34,19 +68,21 @@ function updateSessionStats(latestTextLength = 0) {
 
 // 메시지 렌더링
 function appendMessage(role, text) {
+  if (!chatLogEl) return;
+
   const msgEl = document.createElement("div");
   msgEl.className = `message ${role === "user" ? "user" : "bot"}`;
 
   const avatarEl = document.createElement("div");
   avatarEl.className = "message-avatar";
-  avatarEl.textContent = role === "user" ? "나" : "AI";
+  avatarEl.textContent = role === "user" ? "나" : "이름";
 
   const bodyEl = document.createElement("div");
   bodyEl.className = "message-body";
 
   const metaEl = document.createElement("div");
   metaEl.className = "message-meta";
-  metaEl.textContent = role === "user" ? "AI" : "AI 봇";
+  metaEl.textContent = role === "user" ? "AI" : "봇";
 
   const bubbleEl = document.createElement("div");
   bubbleEl.className = "message-bubble";
@@ -62,21 +98,20 @@ function appendMessage(role, text) {
   scrollToBottom();
 }
 
-// --- 더미 봇 응답 로직 ---
-// 나중에 여기만 Gemini API 호출로 교체하면 됨!
+// --- 더미 봇 응답 로직 (나중에 Gemini API로 교체 예정) ---
+
 const dummyReplies = [
   (userText) =>
-    `음, "${userText}"라고 하셨군요! 지금은 프론트엔드만 만들어둔 상태라 실제 모델을 부르진 않지만, 나중에 Gemini 2.5 Pro를 붙이면 여기서 진짜 답변이 나올 거예요 ✨`,
+    `음, "${userText}"라고 하셨군요! 지금은 프론트엔드 데모라 진짜 모델은 안 부르고 있어요. 나중에 Gemini 2.5 Pro API를 붙이면 여기서 진짜 답변이 나올 거예요 ✨`,
   (userText) =>
     `"${userText}" 에 대해 더 자세히 적어주셔도 좋아요! 지금은 더미 응답이지만, UX 느낌 잡기에는 충분하죠 히히.`,
-  (userText) =>
-    `현재는 로컬에서만 도는 프론트 버전이라, 비용은 0원이에요 🙌\n나중엔 서버에서 API를 호출하고, 여기 UI는 그대로 재사용하면 됩니다!`,
-  (userText) =>
+  () =>
+    `현재는 로컬에서만 도는 프론트 버전이라, 비용은 0원이에요 🙌\n나중엔 서버에서 API를 호출하고, 이 화면은 그대로 재사용하면 됩니다!`,
+  () =>
     `이 메시지는 "리롤 테스트용" 더미 답변이에요. 같은 질문에 여러 스타일을 섞어서 보여주고 싶다면, 나중에 temperature나 system prompt를 바꾸는 식으로 구현할 수 있어요.`,
 ];
 
 function generateDummyReply(userText) {
-  // 항상 다른 느낌을 주고 싶으니까 랜덤으로 뽑기
   const idx = Math.floor(Math.random() * dummyReplies.length);
   lastBotIndex = idx;
   return dummyReplies[idx](userText);
@@ -84,9 +119,8 @@ function generateDummyReply(userText) {
 
 // 마지막 봇 메시지 제거 (리롤 시 사용)
 function removeLastBotMessageFromUI() {
-  const allMessages = Array.from(
-    chatLogEl.querySelectorAll(".message.bot")
-  );
+  if (!chatLogEl) return;
+  const allMessages = Array.from(chatLogEl.querySelectorAll(".message.bot"));
   if (allMessages.length === 0) return;
   const lastBot = allMessages[allMessages.length - 1];
   chatLogEl.removeChild(lastBot);
@@ -94,86 +128,83 @@ function removeLastBotMessageFromUI() {
 
 // --- 폼 전송 핸들러 ---
 
-chatFormEl.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const text = chatInputEl.value.trim();
-  if (!text) return;
-
-  // UI 초기화
-  chatInputEl.value = "";
-  lastUserMessage = text;
-  turnCount += 1;
-  updateSessionStats(text.length);
-
-  messages.push({ role: "user", text });
-  appendMessage("user", text);
-
-  // 여기서 나중에 실제 API 호출하면 됨
-  // TODO: fetch("/api/chat", { method: "POST", body: JSON.stringify({ messages }) ... })
-  const botReply = generateDummyReply(text);
-
-  messages.push({ role: "bot", text: botReply });
-  appendMessage("bot", botReply);
-});
-
-// Enter/단축키 처리 (Ctrl+Enter / Cmd+Enter 전송)
-chatInputEl.addEventListener("keydown", (e) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+if (chatFormEl && chatInputEl) {
+  chatFormEl.addEventListener("submit", async (e) => {
     e.preventDefault();
-    chatFormEl.requestSubmit();
-  }
-});
+    const text = chatInputEl.value.trim();
+    if (!text) return;
 
-// 리롤 버튼: 마지막 봇 답변 교체
-rerollBtnEl.addEventListener("click", () => {
-  if (!lastUserMessage) return;
-  // 마지막 메시지가 봇인지 한 번 확인
-  const lastMsg = messages[messages.length - 1];
-  if (!lastMsg || lastMsg.role !== "bot") return;
+    chatInputEl.value = "";
+    lastUserMessage = text;
+    turnCount += 1;
+    updateSessionStats(text.length);
 
-  // 상태 업데이트
-  rerollCount += 1;
-  updateSessionStats(lastUserMessage.length);
+    messages.push({ role: "user", text });
+    appendMessage("user", text);
 
-  // 메모리 상에서도 마지막 봇 메시지 제거
-  messages = messages.slice(0, messages.length - 1);
-  // UI에서도 제거
-  removeLastBotMessageFromUI();
+    // TODO: 여기 나중에 실제 Gemini API 호출 붙이기
+    const botReply = generateDummyReply(text);
 
-  // 새 응답 생성
-  const newReply = generateDummyReply(lastUserMessage);
-  messages.push({ role: "bot", text: newReply });
-  appendMessage("bot", newReply);
-});
+    messages.push({ role: "bot", text: botReply });
+    appendMessage("bot", botReply);
+  });
+
+  // Enter/단축키 처리 (Ctrl+Enter / Cmd+Enter 전송)
+  chatInputEl.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      e.preventDefault();
+      chatFormEl.requestSubmit();
+    }
+  });
+}
+
+// 리롤 버튼
+if (rerollBtnEl) {
+  rerollBtnEl.addEventListener("click", () => {
+    if (!lastUserMessage) return;
+    const lastMsg = messages[messages.length - 1];
+    if (!lastMsg || lastMsg.role !== "bot") return;
+
+    rerollCount += 1;
+    updateSessionStats(lastUserMessage.length);
+
+    messages = messages.slice(0, messages.length - 1);
+    removeLastBotMessageFromUI();
+
+    const newReply = generateDummyReply(lastUserMessage);
+    messages.push({ role: "bot", text: newReply });
+    appendMessage("bot", newReply);
+  });
+}
 
 // 채팅 초기화 버튼
-clearChatBtnEl.addEventListener("click", () => {
-  messages = [];
-  chatLogEl.innerHTML = "";
-  lastUserMessage = null;
-  lastBotIndex = -1;
-  turnCount = 0;
-  rerollCount = 0;
-  updateSessionStats(0);
-});
+if (clearChatBtnEl) {
+  clearChatBtnEl.addEventListener("click", () => {
+    messages = [];
+    if (chatLogEl) chatLogEl.innerHTML = "";
+    lastUserMessage = null;
+    lastBotIndex = -1;
+    turnCount = 0;
+    rerollCount = 0;
+    updateSessionStats(0);
+  });
+}
 
 // 테스트용 가짜 장기기억 넣기
-fakeMemoryBtnEl.addEventListener("click", () => {
-  memoryBoxEl.textContent =
-    "• 사용자는 Gemini 2.5 Pro 기반 개인 챗봇을 만들고 싶어함.\n" +
-    "• 리롤, 장기기억, 요약 시스템 등 구조적인 설계에 관심이 많음.\n" +
-    "• 비용을 꼼꼼히 계산하며 월 3만원 안쪽에서 운영하고 싶어함.\n" +
-    "• 재잘재잘 장문 대화를 선호하고, UX/디자인에도 관심이 많음.";
-});
- 
-// 초기 상태 반영
-updateSessionStats(0);
+if (fakeMemoryBtnEl) {
+  fakeMemoryBtnEl.addEventListener("click", () => {
+    if (!memoryBoxEl) return;
+    memoryBoxEl.textContent =
+      "• 장기기억 들어올 자리";
+  });
+}
 
-// 첫 안내 메시지 하나 넣어주기
+// 초기 상태 반영 + 안내 메시지
+updateSessionStats(0);
 appendMessage(
   "bot",
-  "안녕! 👋\n\n여기는 아직 프론트엔드만 있는 시제품 챗 화면이에요.\n" +
-    "- 가운데는 채팅 영역\n" +
-    "- 오른쪽은 장기기억/세션 정보\n" +
-    "- 왼쪽은 캐릭터/세션 리스트\n\n나중에 서버랑 API만 붙이면 진짜 Gemini 2.5 Pro랑 대화하는 플랫폼으로 바뀔 거예요 ✨"
+  "안녕! 👋\n\n지금은 '채팅 화면'이 메인 화면 안에 들어가 있는 구조예요.\n" +
+    "- 처음에는 메인 화면에서 채팅/제작/프로필을 선택할 수 있고,\n" +
+    "- 채팅 화면에서는 지금처럼 메시지/리롤/장기기억 패널을 테스트할 수 있어요.\n\n" +
+    "나중에 원하면 여기서 바로 Gemini 2.5 Pro API랑도 연결할 수 있어요 ✨"
 );
