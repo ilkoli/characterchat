@@ -75,14 +75,14 @@ function appendMessage(role, text) {
 
   const avatarEl = document.createElement("div");
   avatarEl.className = "message-avatar";
-  avatarEl.textContent = role === "user" ? "나" : "이름";
+  avatarEl.textContent = role === "user" ? "나" : "AI";
 
   const bodyEl = document.createElement("div");
   bodyEl.className = "message-body";
 
   const metaEl = document.createElement("div");
   metaEl.className = "message-meta";
-  metaEl.textContent = role === "user" ? "AI" : "봇";
+  metaEl.textContent = role === "user" ? "웅니" : "웅니 AI 봇";
 
   const bubbleEl = document.createElement("div");
   bubbleEl.className = "message-bubble";
@@ -195,7 +195,8 @@ if (fakeMemoryBtnEl) {
   fakeMemoryBtnEl.addEventListener("click", () => {
     if (!memoryBoxEl) return;
     memoryBoxEl.textContent =
-      "• 장기기억 들어올 자리";
+      "• 장기기억 들어올 자리\n" +
+      "• 여기에는 나중에 요약 시스템이 생성한 요약 텍스트가 표시될 예정!";
   });
 }
 
