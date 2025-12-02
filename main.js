@@ -14,7 +14,7 @@ function applyTheme(theme) {
     themeToggleEl.textContent = icon;
     themeToggleEl.setAttribute(
       "aria-label",
-      `${current} 모드 (눌러서 ${next} 전환)`,
+      `${current} 모드 (눌러서 ${next} 전환)`
     );
   }
 }
@@ -24,7 +24,7 @@ function initTheme() {
 
   const saved = localStorage.getItem(THEME_STORAGE_KEY);
   const systemPrefersDark = window.matchMedia(
-    "(prefers-color-scheme: dark)",
+    "(prefers-color-scheme: dark)"
   ).matches;
   const initialTheme = saved || (systemPrefersDark ? "dark" : "light");
   applyTheme(initialTheme);
@@ -62,7 +62,7 @@ const memoryBoxEl = document.getElementById("memory-box");
 // 상태 값들
 let messages = []; // { role: "user" | "bot", text: string }
 let lastUserMessage = null;
-let lastBotIndex = -1; // 지금은 안 쓰지만 일단 유지
+let lastBotIndex = -1; // 지금은 안 쓰지만 남겨둠
 let rerollCount = 0;
 let turnCount = 0;
 let isRequesting = false; // 중복 요청 방지
@@ -131,13 +131,15 @@ async function callBackend(userText) {
     const res = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userText }),
+      body: JSON.stringify({ message: userText })
     });
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
       throw new Error(
-        `HTTP ${res.status} ${res.statusText} ${errText ? "- " + errText : ""}`,
+        `HTTP ${res.status} ${res.statusText}${
+          errText ? " - " + errText : ""
+        }`
       );
     }
 
@@ -148,7 +150,9 @@ async function callBackend(userText) {
     return data.reply;
   } catch (err) {
     console.error("백엔드 호출 에러:", err);
-    return `⚠️ 서버 호출 중 오류가 발생했어요.\n(${String(err.message || err)})`;
+    return `⚠️ 서버 호출 중 오류가 발생했어요.\n(${String(
+      err.message || err
+    )})`;
   }
 }
 
@@ -223,7 +227,7 @@ if (clearChatBtnEl) {
   });
 }
 
-// 테스트용 가짜 장기기억 넣기 (그냥 그대로 둠)
+// 테스트용 가짜 장기기억 넣기
 if (fakeMemoryBtnEl) {
   fakeMemoryBtnEl.addEventListener("click", () => {
     if (!memoryBoxEl) return;
@@ -239,6 +243,6 @@ if (chatLogEl) {
   appendMessage(
     "bot",
     "안녕! 👋\n지금 이 채팅은 백엔드 Cloud Functions를 통해 Gemini 2.5 Pro로 연결돼 있어요.\n" +
-      "아래 입력창에 아무 말이나 적고 '보내기'를 눌러서 테스트해 봐!",
+      "아래 입력창에 아무 말이나 적고 '보내기'를 눌러서 테스트해 봐!"
   );
 }
