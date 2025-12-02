@@ -464,3 +464,65 @@ body {
     display: none;
   }
 }
+/* 여러 "화면" 공통 스타일 */
+.screen {
+  display: none;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* 메인 화면 레이아웃 */
+.home-wrap {
+  padding: 20px 18px;
+}
+
+.home-wrap h1 {
+  margin: 6px 0 8px;
+}
+
+.home-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.home-card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-soft);
+  font-size: 13px;
+}
+
+/* 서브 화면 상단 헤더 */
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: #F8FAF0;
+}
+
+.screen-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* 제작/프로필 공통 컨테이너 */
+.generic-page {
+  padding: 18px;
+  font-size: 14px;
+  color: var(--text);
+}
