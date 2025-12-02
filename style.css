@@ -65,6 +65,7 @@ body {
   letter-spacing: 0.03em;
   font-size: 15px;
   color: var(--text);
+  text-decoration: none;
 }
 
 .header-right {
