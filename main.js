@@ -1,35 +1,3 @@
-// ===== 화면 전환(메인/채팅/제작/프로필) =====
-
-const screens = {
-  home: document.getElementById("screen-home"),
-  chat: document.getElementById("screen-chat"),
-  create: document.getElementById("screen-create"),
-  profile: document.getElementById("screen-profile"),
-};
-
-function showScreen(name) {
-  Object.entries(screens).forEach(([key, el]) => {
-    if (!el) return;
-    el.classList.toggle("active", key === name);
-  });
-  // 채팅 화면 들어올 때 로그 맨 아래로 스크롤
-  if (name === "chat") {
-    scrollToBottom();
-  }
-}
-
-// 메인/상단 버튼들에 연결
-document.querySelectorAll(".nav-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const target = btn.getAttribute("data-target");
-    if (!target) return;
-    showScreen(target);
-  });
-});
-
-// 시작 화면은 메인
-showScreen("home");
-
 // ===== 채팅 로직 =====
 
 const chatLogEl = document.getElementById("chat-log");
@@ -204,8 +172,5 @@ if (fakeMemoryBtnEl) {
 updateSessionStats(0);
 appendMessage(
   "bot",
-  "안녕! 👋\n\n지금은 '채팅 화면'이 메인 화면 안에 들어가 있는 구조예요.\n" +
-    "- 처음에는 메인 화면에서 채팅/제작/프로필을 선택할 수 있고,\n" +
-    "- 채팅 화면에서는 지금처럼 메시지/리롤/장기기억 패널을 테스트할 수 있어요.\n\n" +
-    "나중에 원하면 여기서 바로 Gemini 2.5 Pro API랑도 연결할 수 있어요 ✨"
+  "채팅 페이지 테스트"
 );
