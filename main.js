@@ -1,3 +1,45 @@
+// ===== 공통: 라이트/다크 테마 토글 =====
+
+const themeToggleEl = document.getElementById("theme-toggle");
+const THEME_STORAGE_KEY = "characterchat-theme";
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.body.classList.toggle("theme-dark", isDark);
+
+  if (themeToggleEl) {
+    const icon = isDark ? "🌙" : "🌞";
+    const current = isDark ? "다크" : "라이트";
+    const next = isDark ? "라이트" : "다크";
+    themeToggleEl.textContent = icon;
+    themeToggleEl.setAttribute(
+      "aria-label",
+      `${current} 모드 (눌러서 ${next} 전환)`,
+    );
+  }
+}
+
+function initTheme() {
+  if (!themeToggleEl) return;
+
+  const saved = localStorage.getItem(THEME_STORAGE_KEY);
+  const systemPrefersDark = window.matchMedia(
+    "(prefers-color-scheme: dark)",
+  ).matches;
+  const initialTheme = saved || (systemPrefersDark ? "dark" : "light");
+  applyTheme(initialTheme);
+
+  themeToggleEl.addEventListener("click", () => {
+    const nextTheme = document.body.classList.contains("theme-dark")
+      ? "light"
+      : "dark";
+    applyTheme(nextTheme);
+    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+  });
+}
+
+initTheme();
+
 // ===== 채팅 로직 =====
 
 const chatLogEl = document.getElementById("chat-log");
