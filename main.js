@@ -546,23 +546,26 @@ if (chatLogEl) {
     const message = messages.find((m) => m.id === messageId);
     if (!message) return;
 
+    // 🔹 복사
     if (action === "copy") {
       try {
         await navigator.clipboard.writeText(message.text || "");
         showToast("복사 완료!");
       } catch (err) {
         console.error("복사 실패", err);
-        showToast("복사 실패);
+        showToast("복사 실패 ㅠㅠ");
       }
       return;
     }
 
+    // 🔹 인라인 수정 모드 진입
     if (action === "edit") {
       enterEditMode(message, messageEl);
       showToast("Ctrl+Enter: 저장 · Esc: 취소");
       return;
     }
 
+    // 🔹 삭제
     if (action === "delete") {
       messages = messages.filter((m) => m.id !== messageId);
       messageEl.remove();
@@ -571,9 +574,11 @@ if (chatLogEl) {
       return;
     }
 
+    // 🔹 리롤 (가장 최신 봇 메시지일 때만)
     if (action === "reroll") {
       if (isRequesting || !lastUserMessage) return;
 
+      // 실제 마지막 봇 메시지 찾기
       let lastBot = null;
       let lastBotIndex = -1;
       for (let i = messages.length - 1; i >= 0; i--) {
@@ -583,15 +588,19 @@ if (chatLogEl) {
           break;
         }
       }
+
+      // 최신 봇 말풍선이 아니면 무시
       if (!lastBot || lastBot.id !== messageId) return;
 
       rerollCount += 1;
       updateSessionStats(lastUserMessage.length);
 
+      // 상태/화면에서 마지막 봇 메시지 제거
       messages.splice(lastBotIndex, 1);
       messageEl.remove();
       updateRerollButtons();
 
+      // 다시 호출
       isRequesting = true;
       const newReply = await callBackend(lastUserMessage);
       isRequesting = false;
@@ -604,6 +613,7 @@ if (chatLogEl) {
       messages.push(newBotMsg);
       appendMessage(newBotMsg);
       showToast("리롤 완료!");
+      return;
     }
   });
 }
