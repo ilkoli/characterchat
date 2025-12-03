@@ -294,6 +294,17 @@ function updateSessionStats(latestTextLength = 0) {
   lastLengthEl.textContent = `${latestTextLength} 자`;
 }
 
+// 토스트 메시지 유틸
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1600);
+}
+
 // 🔹 현재 캐릭터 프롬프트(본문)를 localStorage에서 꺼내기
 function getCurrentSystemPrompt() {
   try {
