@@ -261,7 +261,6 @@ const API_ENDPOINT =
 const chatLogEl = document.getElementById("chat-log");
 const chatFormEl = document.getElementById("chat-form");
 const chatInputEl = document.getElementById("chat-input");
-const rerollBtnEl = document.getElementById("reroll-btn");
 const clearChatBtnEl = document.getElementById("clear-chat-btn");
 const fakeMemoryBtnEl = document.getElementById("fake-memory-btn");
 
@@ -271,7 +270,8 @@ const lastLengthEl = document.getElementById("last-length");
 const memoryBoxEl = document.getElementById("memory-box");
 
 // 상태 값들
-let messages = []; // { role: "user" | "bot", text: string }
+let nextMessageId = 0; // 🔹 각 메시지 고유 ID
+let messages = [];     // { id, role: "user" | "bot", text: string }
 let lastUserMessage = null;
 let lastBotIndex = -1; // 지금은 안 쓰지만 남겨둠
 let rerollCount = 0;
@@ -316,12 +316,39 @@ function renderMarkdown(text) {
   return div.innerHTML;
 }
 
-// 메시지 렌더링
-function appendMessage(role, text) {
+// 🔹 가장 최신 봇(assistant) 말풍선에만 리롤 버튼 보이도록
+function updateRerollButtons() {
   if (!chatLogEl) return;
+
+  // 모든 리롤 버튼 숨기기
+  const allRerollBtns = chatLogEl.querySelectorAll(
+    ".message[data-role='bot'] .bubble-btn--reroll"
+  );
+  allRerollBtns.forEach((btn) => btn.classList.add("is-hidden"));
+
+  // 마지막 봇 메시지 찾기
+  const botMessages = Array.from(
+    chatLogEl.querySelectorAll(".message[data-role='bot']")
+  );
+  if (botMessages.length === 0) return;
+
+  const lastBot = botMessages[botMessages.length - 1];
+  const lastRerollBtn = lastBot.querySelector(".bubble-btn--reroll");
+  if (lastRerollBtn) {
+    lastRerollBtn.classList.remove("is-hidden");
+  }
+}
+
+// 메시지 렌더링 (버튼 포함)
+function appendMessage(message) {
+  if (!chatLogEl) return;
+
+  const { id, role, text } = message;
 
   const msgEl = document.createElement("div");
   msgEl.className = `message ${role === "user" ? "user" : "bot"}`;
+  msgEl.dataset.messageId = String(id);
+  msgEl.dataset.role = role;
 
   const avatarEl = document.createElement("div");
   avatarEl.className = "message-avatar";
@@ -337,8 +364,41 @@ function appendMessage(role, text) {
   const bubbleEl = document.createElement("div");
   bubbleEl.className = "message-bubble";
 
-  // 🔹 마크다운 적용해서 렌더
-  bubbleEl.innerHTML = renderMarkdown(text);
+  // 내용
+  const contentEl = document.createElement("div");
+  contentEl.className = "message-bubble-content";
+  contentEl.innerHTML = renderMarkdown(text);
+
+  // 말풍선 하단 버튼 영역
+  const actionsEl = document.createElement("div");
+  actionsEl.className = "message-bubble-actions";
+
+  // 🔁 리롤 버튼: 봇 메시지에만 생성
+  if (role === "bot") {
+    const rerollBtn = document.createElement("button");
+    rerollBtn.className = "bubble-btn bubble-btn--reroll";
+    rerollBtn.dataset.action = "reroll";
+    rerollBtn.textContent = "🔁 리롤";
+    actionsEl.appendChild(rerollBtn);
+  }
+
+  // 공통 버튼들: 복사 / 수정 / 삭제
+  const actions = [
+    { action: "copy", label: "복사" },
+    { action: "edit", label: "수정" },
+    { action: "delete", label: "삭제" },
+  ];
+
+  actions.forEach(({ action, label }) => {
+    const btn = document.createElement("button");
+    btn.className = "bubble-btn";
+    btn.dataset.action = action;
+    btn.textContent = label;
+    actionsEl.appendChild(btn);
+  });
+
+  bubbleEl.appendChild(contentEl);
+  bubbleEl.appendChild(actionsEl);
 
   bodyEl.appendChild(metaEl);
   bodyEl.appendChild(bubbleEl);
@@ -348,15 +408,8 @@ function appendMessage(role, text) {
 
   chatLogEl.appendChild(msgEl);
   scrollToBottom();
-}
 
-// 마지막 봇 메시지 제거 (리롤 시 사용)
-function removeLastBotMessageFromUI() {
-  if (!chatLogEl) return;
-  const allMessages = Array.from(chatLogEl.querySelectorAll(".message.bot"));
-  if (allMessages.length === 0) return;
-  const lastBot = allMessages[allMessages.length - 1];
-  chatLogEl.removeChild(lastBot);
+  updateRerollButtons();
 }
 
 // --- 백엔드 호출 함수 (Gemini 호출 프록시) ---
@@ -412,15 +465,17 @@ if (chatFormEl && chatInputEl) {
     turnCount += 1;
     updateSessionStats(text.length);
 
-    messages.push({ role: "user", text });
-    appendMessage("user", text);
+    const userMsg = { id: nextMessageId++, role: "user", text };
+    messages.push(userMsg);
+    appendMessage(userMsg);
 
     isRequesting = true;
 
     const botReply = await callBackend(text);
 
-    messages.push({ role: "bot", text: botReply });
-    appendMessage("bot", botReply);
+    const botMsg = { id: nextMessageId++, role: "bot", text: botReply };
+    messages.push(botMsg);
+    appendMessage(botMsg);
 
     isRequesting = false;
   });
@@ -434,26 +489,83 @@ if (chatFormEl && chatInputEl) {
   });
 }
 
-// 리롤 버튼 (마지막 유저 메시지를 다시 보냄)
-if (rerollBtnEl) {
-  rerollBtnEl.addEventListener("click", async () => {
-    if (!lastUserMessage || isRequesting) return;
-    const lastMsg = messages[messages.length - 1];
-    if (!lastMsg || lastMsg.role !== "bot") return;
+// 🔹 말풍선 하단 버튼들(복사/수정/삭제/리롤) 이벤트 위임
+if (chatLogEl) {
+  chatLogEl.addEventListener("click", async (e) => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
 
-    rerollCount += 1;
-    updateSessionStats(lastUserMessage.length);
+    const action = btn.dataset.action;
+    const messageEl = btn.closest(".message");
+    if (!messageEl) return;
 
-    // UI에서 마지막 봇 메시지 제거
-    messages = messages.slice(0, messages.length - 1);
-    removeLastBotMessageFromUI();
+    const messageId = Number(messageEl.dataset.messageId);
+    const message = messages.find((m) => m.id === messageId);
+    if (!message) return;
 
-    isRequesting = true;
-    const newReply = await callBackend(lastUserMessage);
-    isRequesting = false;
+    if (action === "copy") {
+      // 복사
+      try {
+        await navigator.clipboard.writeText(message.text);
+        console.log("메시지 복사 완료");
+      } catch (err) {
+        console.error("복사 실패", err);
+      }
+    } else if (action === "edit") {
+      // 수정 (간단하게 prompt로)
+      const newText = window.prompt("메시지를 수정해주세요.", message.text);
+      if (newText === null) return; // 취소
+      message.text = newText;
 
-    messages.push({ role: "bot", text: newReply });
-    appendMessage("bot", newReply);
+      const contentEl = messageEl.querySelector(".message-bubble-content");
+      if (contentEl) {
+        contentEl.innerHTML = renderMarkdown(newText);
+      }
+    } else if (action === "delete") {
+      // 삭제
+      messages = messages.filter((m) => m.id !== messageId);
+      messageEl.remove();
+      updateRerollButtons();
+    } else if (action === "reroll") {
+      // 리롤: "가장 마지막 봇 메시지"에만 동작
+      if (isRequesting || !lastUserMessage) return;
+
+      // 실제 마지막 봇 메시지 찾기
+      let lastBot = null;
+      let lastBotIndex = -1;
+      for (let i = messages.length - 1; i >= 0; i--) {
+        if (messages[i].role === "bot") {
+          lastBot = messages[i];
+          lastBotIndex = i;
+          break;
+        }
+      }
+      if (!lastBot || lastBot.id !== messageId) {
+        // 최신 봇 메시지가 아니면 무시
+        return;
+      }
+
+      rerollCount += 1;
+      updateSessionStats(lastUserMessage.length);
+
+      // 상태/화면에서 마지막 봇 메시지 제거
+      messages.splice(lastBotIndex, 1);
+      messageEl.remove();
+      updateRerollButtons();
+
+      // 백엔드에 다시 요청
+      isRequesting = true;
+      const newReply = await callBackend(lastUserMessage);
+      isRequesting = false;
+
+      const newBotMsg = {
+        id: nextMessageId++,
+        role: "bot",
+        text: newReply,
+      };
+      messages.push(newBotMsg);
+      appendMessage(newBotMsg);
+    }
   });
 }
 
@@ -461,6 +573,7 @@ if (rerollBtnEl) {
 if (clearChatBtnEl) {
   clearChatBtnEl.addEventListener("click", () => {
     messages = [];
+    nextMessageId = 0;
     if (chatLogEl) chatLogEl.innerHTML = "";
     lastUserMessage = null;
     lastBotIndex = -1;
@@ -483,8 +596,11 @@ if (fakeMemoryBtnEl) {
 // 초기 상태 반영 + 안내 메시지 (채팅 페이지일 때만)
 if (chatLogEl) {
   updateSessionStats(0);
-  appendMessage(
-    "bot",
-    "지금 이 채팅은 백엔드 Cloud Functions를 통해 Gemini 2.5 Pro로 연결돼 있어요."
-  );
+  const initialMsg = {
+    id: nextMessageId++,
+    role: "bot",
+    text: "지금 이 채팅은 백엔드 Cloud Functions를 통해 Gemini 2.5 Pro로 연결돼 있어요.",
+  };
+  messages.push(initialMsg);
+  appendMessage(initialMsg);
 }
