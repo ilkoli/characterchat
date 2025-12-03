@@ -347,6 +347,63 @@ header {
   border-color: rgba(119, 136, 115, 0.35);
 }
 
+/* 🔹 말풍선 내부 컨텐츠 + 하단 액션 버튼 영역 */
+
+.message-bubble-content {
+  /* 기본 텍스트 영역 */
+}
+
+.message-bubble-actions {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+/* 아이콘 버튼 (리롤/복사/수정/삭제 공통) */
+
+.bubble-btn {
+  border: none;
+  padding: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--surface-pill);
+  font-size: 0; /* 아이콘만 보이게 텍스트 숨기기 */
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.05s ease;
+}
+
+.bubble-btn i {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.bubble-btn:hover {
+  background: var(--accent-soft);
+  color: var(--text);
+  transform: translateY(-0.5px);
+}
+
+.bubble-btn--reroll {
+  font-weight: 600;
+}
+
+/* JS에서 쓰는 숨김 클래스 */
+.bubble-btn.is-hidden,
+.is-hidden {
+  display: none !important;
+}
+
 /* 입력창 */
 
 .chat-input {
