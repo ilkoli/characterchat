@@ -27,7 +27,7 @@
         <a class="btn subtle" href="index.html">← 메인으로</a>
         <h2>🎨 제작 탭</h2>
         <p>
-          캐릭터 프롬프트를 마크다운으로 작성하고, 채팅 제목과 함께 저장하는 공간입니다.
+          캐릭터 프롬프트를 마크다운으로 작성하고, 채팅 제목과 시작 상황/첫 대사를 함께 관리하는 공간입니다.
         </p>
 
         <!-- 1. 채팅 제목 (제미나이에겐 안 보내는 값) -->
@@ -50,7 +50,7 @@
             rows="14"
             placeholder="# Role & Purpose
 당신은 ...
-            
+
 ## System Directives
 - 이런저런 지침...
 
@@ -64,15 +64,44 @@
           </p>
         </section>
 
-        <!-- 3. 버튼들 -->
+        <!-- 🔥 새로 추가: 시작 상황 -->
+        <section>
+          <h3>3. 시작 상황</h3>
+          <textarea
+            id="start-situation"
+            rows="5"
+            placeholder="예: 
+{user}는 대학생이고, 지금 막 비 오는 날 카페에 들어왔다...
+AI 캐릭터는 카페 사장님이며, {user}와는 어릴 적 친구였다..."
+          ></textarea>
+          <p class="help-text">
+            * 첫 회차 시작할 때의 배경 설명, 장면 분위기 등을 적어두는 칸이에요. (마크다운 가능)
+          </p>
+        </section>
+
+        <!-- 🔥 새로 추가: 시작 대사 -->
+        <section>
+          <h3>4. 시작 대사 (AI가 먼저 하는 말)</h3>
+          <textarea
+            id="start-message"
+            rows="4"
+            placeholder="예: 
+&quot;어? 너… 진짜 오랜만이다. 설마 나 아직도 기억하고 있는 거야?&quot;"
+          ></textarea>
+          <p class="help-text">
+            * 챗을 열었을 때 AI가 제일 처음 건네는 대사를 써두는 칸이에요. (마크다운 가능)
+          </p>
+        </section>
+
+        <!-- 5. 버튼들 -->
         <div class="button-row">
           <button id="preview-btn" class="btn secondary">👁 미리보기 업데이트</button>
           <button id="copy-btn" class="btn primary">📋 프롬프트 복사</button>
         </div>
 
-        <!-- 4. 미리보기 (마크다운 렌더링) -->
+        <!-- 6. 미리보기 (마크다운 렌더링) -->
         <section>
-          <h3>3. 프롬프트 미리보기</h3>
+          <h3>5. 프롬프트 미리보기</h3>
           <div id="prompt-preview" class="markdown-preview"></div>
         </section>
       </main>
