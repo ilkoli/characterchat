@@ -818,3 +818,23 @@ header {
   transform: translateX(-50%) translateY(-6px);
 }
 
+/* 말풍선 인라인 수정용 입력창 */
+.message-edit-input {
+  width: 100%;
+  min-height: 60px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  padding: 6px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--text);
+}
+
+.message-edit-input:focus {
+  outline: none;
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 0 1px rgba(161, 188, 152, 0.45);
+}
