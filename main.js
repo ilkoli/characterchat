@@ -3,6 +3,9 @@
 const themeToggleEl = document.getElementById("theme-toggle");
 const THEME_STORAGE_KEY = "characterchat-theme";
 
+// 🔹 캐릭터 프롬프트 저장 키 (create.js에서 이 키로 저장해줄 예정)
+const PROMPT_STORAGE_KEY = "characterchat-current-prompt";
+
 function applyTheme(theme) {
   const isDark = theme === "dark";
   document.body.classList.toggle("theme-dark", isDark);
@@ -83,6 +86,28 @@ function updateSessionStats(latestTextLength = 0) {
   lastLengthEl.textContent = `${latestTextLength} 자`;
 }
 
+// 🔹 현재 캐릭터 프롬프트(본문)를 localStorage에서 꺼내기
+function getCurrentSystemPrompt() {
+  try {
+    const stored = localStorage.getItem(PROMPT_STORAGE_KEY);
+    return stored || "";
+  } catch {
+    return "";
+  }
+}
+
+// 🔹 마크다운 렌더링 유틸
+function renderMarkdown(text) {
+  // marked 라이브러리가 있으면 사용
+  if (typeof marked !== "undefined") {
+    return marked.parse(text);
+  }
+  // 없으면 그냥 이스케이프된 텍스트만 출력
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 // 메시지 렌더링
 function appendMessage(role, text) {
   if (!chatLogEl) return;
@@ -103,7 +128,9 @@ function appendMessage(role, text) {
 
   const bubbleEl = document.createElement("div");
   bubbleEl.className = "message-bubble";
-  bubbleEl.textContent = text;
+
+  // 🔹 마크다운 적용해서 렌더
+  bubbleEl.innerHTML = renderMarkdown(text);
 
   bodyEl.appendChild(metaEl);
   bodyEl.appendChild(bubbleEl);
@@ -128,10 +155,18 @@ function removeLastBotMessageFromUI() {
 
 async function callBackend(userText) {
   try {
+    const systemPrompt = getCurrentSystemPrompt();
+
+    const payload = {
+      message: userText,
+      // 🔹 시스템/캐릭터 프롬프트를 함께 보냄 (백엔드에서 선택적으로 사용할 수 있음)
+      systemPrompt: systemPrompt
+    };
+
     const res = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userText })
+      body: JSON.stringify(payload)
     });
 
     if (!res.ok) {
