@@ -83,6 +83,7 @@ body {
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 .app {
@@ -598,7 +599,116 @@ a {
 /* 제작/프로필 공통 컨테이너 */
 
 .generic-page {
-  padding: 18px;
+  padding: 20px 18px 24px;
   font-size: 14px;
   color: var(--text);
+  background: var(--surface-strong);
+  min-height: calc(100vh - 56px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.generic-page h2 {
+  margin: 4px 0 6px;
+  font-size: 18px;
+}
+
+.generic-page h3 {
+  margin: 12px 0 4px;
+  font-size: 15px;
+}
+
+.generic-page p {
+  margin: 2px 0 4px;
+}
+
+/* ===== 제작 탭: 모던 입력창 / 설명문 / 프리뷰 ===== */
+
+.text-input,
+.generic-page textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-top: 0.3rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 3rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease,
+    transform 0.05s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.text-input::placeholder,
+.generic-page textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.text-input:focus,
+.generic-page textarea:focus {
+  outline: none;
+  border-color: var(--accent-strong);
+  box-shadow:
+    0 0 0 1px rgba(161, 188, 152, 0.45),
+    0 6px 18px rgba(0, 0, 0, 0.16);
+  transform: translateY(-1px);
+}
+
+/* 제작 탭 설명문 */
+
+.help-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* 버튼 묶음 정렬 */
+
+.button-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+/* 프롬프트 미리보기 카드 */
+
+.markdown-preview {
+  margin-top: 0.75rem;
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  max-height: 480px;
+  overflow-y: auto;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.markdown-preview h1,
+.markdown-preview h2,
+.markdown-preview h3 {
+  margin-top: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+
+.markdown-preview p {
+  margin: 0.2rem 0;
+}
+
+.markdown-preview hr {
+  border: none;
+  border-top: 1px dashed var(--border-subtle);
+  margin: 0.75rem 0;
 }
