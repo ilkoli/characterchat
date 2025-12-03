@@ -102,6 +102,11 @@ a {
   min-height: 64px;             /* 헤더 최소 높이 고정 */
   box-sizing: border-box;
   flex-shrink: 0;
+  background: linear-gradient(
+    90deg,
+    var(--header-gradient-start),
+    var(--header-gradient-end)
+  );
 }
 
 /* 혹시 다른 곳에서 header에 스타일을 걸어놨으면 깨트리기 */
