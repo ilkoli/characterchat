@@ -130,7 +130,49 @@
       </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Firebase 초기화 & Firestore 설정 -->
+    <script type="module">
+      // Firebase core
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+      // Firestore
+      import { 
+        getFirestore, 
+        collection, 
+        addDoc, 
+        getDocs,
+        doc,
+        updateDoc,
+        deleteDoc
+      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+      // Firebase 설정 (웅니 콘솔에서 가져온 값)
+      const firebaseConfig = {
+        apiKey: "AIzaSyAdlXOdvcrY2EgpJ5jUYvp5j1HXeYDJ6i4",
+        authDomain: "ilkoliai-c3b91.firebaseapp.com",
+        projectId: "ilkoliai-c3b91",
+        storageBucket: "ilkoliai-c3b91.firebasestorage.app",
+        messagingSenderId: "195364000798",
+        appId: "1:195364000798:web:b6585eb88e9065c54b0a0f",
+        measurementId: "G-DB8VYMPZH7"
+      };
+
+      // Firebase / Firestore 초기화
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // 다른 스크립트에서 쓰기 편하게 window에 붙이기
+      window.firebaseDB = db;
+      window.firebaseCollection = collection;
+      window.firebaseAddDoc = addDoc;
+      window.firebaseGetDocs = getDocs;
+      window.firebaseDoc = doc;
+      window.firebaseUpdateDoc = updateDoc;
+      window.firebaseDeleteDoc = deleteDoc;
+    </script>
+
+    <!-- 파이어베이스 초기화가 끝난 뒤 main.js 실행 -->
     <script src="main.js"></script>
   </body>
 </html>
