@@ -93,19 +93,20 @@ a {
 }
 
 /* 헤더 */
-
+/* 공통 헤더 모양 강제 통일 */
 .app-header {
-  height: 56px;
   display: flex;
-  align-items: center;
+  align-items: center;          /* 세로 가운데 정렬 */
   justify-content: space-between;
-  padding: 0 18px;
-  border-bottom: 1px solid var(--border-subtle);
-  background: linear-gradient(
-    90deg,
-    var(--header-gradient-start),
-    var(--header-gradient-end)
-  );
+  padding: 16px 24px;           /* 위아래 16px, 좌우 24px */
+  min-height: 64px;             /* 헤더 최소 높이 고정 */
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* 혹시 다른 곳에서 header에 스타일을 걸어놨으면 깨트리기 */
+header {
+  margin: 0;
 }
 
 .logo {
