@@ -11,7 +11,7 @@
       <header class="app-header">
         <a class="logo" href="index.html">일콜이AI</a>
         <div class="header-right">
-          <span class="model-pill">Gemini 2.5 Pro (프론트만)</span>
+          <span class="model-pill">Gemini 2.5 Pro</span>
           <button
             id="theme-toggle"
             class="theme-toggle"
@@ -37,9 +37,9 @@
             id="chat-title"
             type="text"
             class="text-input"
-            placeholder="예: [성인] 집착 연상 남친 x 무심한 대학생"
+            placeholder="제목을 작성해주세요..."
           />
-          <p class="help-text">* 이 제목은 화면에만 쓰이고, Gemini에게는 보내지 않아요.</p>
+          <p class="help-text">* 이 제목은 화면에만 쓰이고, AI에게는 보내지 않아요.</p>
         </section>
 
         <!-- 2. 프롬프트 본문 (시스템 지침 + 캐릭터 설정, 마크다운) -->
@@ -48,8 +48,9 @@
           <textarea
             id="prompt-body"
             rows="14"
-            placeholder="# Role & Purpose
-당신은 ...
+            placeholder="예시)
+# Role & Purpose
+당신은 캐릭터를 연기하는 AI 어시스턴트...
 
 ## System Directives
 - 이런저런 지침...
@@ -57,6 +58,8 @@
 ## Character
 - 이름: ...
 - 말투: ...
+
+## World
 - 세계관: ..."
           ></textarea>
           <p class="help-text">
