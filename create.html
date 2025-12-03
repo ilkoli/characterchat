@@ -12,7 +12,12 @@
         <a class="logo" href="index.html">일콜이AI</a>
         <div class="header-right">
           <span class="model-pill">Gemini 2.5 Pro (프론트만)</span>
-          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="테마 토글">
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            type="button"
+            aria-label="테마 토글"
+          >
             🌞
           </button>
         </div>
@@ -25,9 +30,41 @@
           나중에 캐릭터 프롬프트, 말투, 세계관 설정을 입력하고 저장하는 UI 넣기.
         </p>
         <p>지금은 그냥 레이아웃만 잡아둔 상태.</p>
+
+        <!-- ✨ 여기부터 실제 제작 UI ✨ -->
+        <section>
+          <h3>1. 캐릭터 설정</h3>
+          <textarea
+            id="char-info"
+            rows="8"
+            placeholder="캐릭터 이름, 나이, 배경, 성격, 외형, 관계 등을 자유롭게 적어주세요!"
+          ></textarea>
+        </section>
+
+        <section>
+          <h3>2. 시스템 지침(룰)</h3>
+          <textarea
+            id="system-rules"
+            rows="8"
+            placeholder="Role & Purpose, 반드시 지켜야 할 말투/행동 규칙 등을 적어주세요."
+          ></textarea>
+        </section>
+
+        <button id="generate-btn" class="btn primary">
+          ✨ 프롬프트 생성하기
+        </button>
+
+        <section>
+          <h3>3. 최종 프롬프트</h3>
+          <pre id="result" class="code-block"></pre>
+        </section>
+        <!-- ✨ 여기까지 제작 UI ✨ -->
       </main>
     </div>
 
+    <!-- 공통 기능 (테마 토글 등) -->
     <script src="main.js"></script>
+    <!-- 제작 탭 전용 JS -->
+    <script src="create.js"></script>
   </body>
 </html>
