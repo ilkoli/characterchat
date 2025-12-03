@@ -364,18 +364,21 @@ header {
 
 /* 아이콘 버튼 (리롤/복사/수정/삭제 공통) */
 
+/* 아이콘 동그라미 버튼 */
 .bubble-btn {
   border: none;
-  padding: 4px;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
   background: var(--surface-pill);
-  font-size: 0; /* 아이콘만 보이게 텍스트 숨기기 */
   cursor: pointer;
+
+  /* 가운데 정렬 핵심 */
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  /* 약간의 스타일 */
   color: var(--text-muted);
   transition:
     background-color 0.15s ease,
@@ -383,9 +386,27 @@ header {
     transform 0.05s ease;
 }
 
+/* 플래티콘 아이콘이 자체적으로 갖고 있는 여백/라인 높이 초기화 */
 .bubble-btn i {
-  font-size: 13px;
-  line-height: 1;
+  display: block;
+  font-size: 14px;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  /* 살짝 내려서 시각적으로 완전 중앙처럼 보이게 (원하면 빼도 됨) */
+  transform: translateY(0.5px);
+}
+
+.bubble-btn:hover {
+  background: var(--accent-soft);
+  color: var(--text);
+  transform: translateY(-0.3px);
+}
+
+/* JS에서 쓰는 숨김 클래스는 그대로 두면 돼 */
+.bubble-btn.is-hidden,
+.is-hidden {
+  display: none !important;
 }
 
 .bubble-btn:hover {
