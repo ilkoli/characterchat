@@ -339,7 +339,7 @@ function updateRerollButtons() {
   }
 }
 
-// 메시지 렌더링 (버튼 포함)
+// 메시지 렌더링 (아이콘 버튼 포함)
 function appendMessage(message) {
   if (!chatLogEl) return;
 
@@ -373,27 +373,41 @@ function appendMessage(message) {
   const actionsEl = document.createElement("div");
   actionsEl.className = "message-bubble-actions";
 
-  // 🔁 리롤 버튼: 봇 메시지에만 생성
+  // 🔁 리롤 아이콘 버튼: 봇 메시지에만 생성
   if (role === "bot") {
     const rerollBtn = document.createElement("button");
     rerollBtn.className = "bubble-btn bubble-btn--reroll";
     rerollBtn.dataset.action = "reroll";
-    rerollBtn.textContent = "🔁 리롤";
+    rerollBtn.innerHTML = `<i class="fi fi-rr-refresh"></i>`;
+    rerollBtn.title = "리롤";
     actionsEl.appendChild(rerollBtn);
   }
 
-  // 공통 버튼들: 복사 / 수정 / 삭제
+  // 공통 버튼들: 복사 / 수정 / 삭제 (전부 아이콘)
   const actions = [
-    { action: "copy", label: "복사" },
-    { action: "edit", label: "수정" },
-    { action: "delete", label: "삭제" },
+    {
+      action: "copy",
+      title: "복사",
+      iconHTML: `<i class="fi fi-rr-copy"></i>`,
+    },
+    {
+      action: "edit",
+      title: "수정",
+      iconHTML: `<i class="fi fi-rr-edit"></i>`,
+    },
+    {
+      action: "delete",
+      title: "삭제",
+      iconHTML: `<i class="fi fi-rr-trash"></i>`,
+    },
   ];
 
-  actions.forEach(({ action, label }) => {
+  actions.forEach(({ action, title, iconHTML }) => {
     const btn = document.createElement("button");
     btn.className = "bubble-btn";
     btn.dataset.action = action;
-    btn.textContent = label;
+    btn.innerHTML = iconHTML;
+    btn.title = title;
     actionsEl.appendChild(btn);
   });
 
@@ -411,6 +425,7 @@ function appendMessage(message) {
 
   updateRerollButtons();
 }
+
 
 // --- 백엔드 호출 함수 (Gemini 호출 프록시) ---
 
